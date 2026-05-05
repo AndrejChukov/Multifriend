@@ -45,7 +45,7 @@
                     Команда Multi-friend готова взять эти заботы на себя!
                 </p>
 
-                <form th:action="@{/submit-form}" th:object="${feedbackForm}" method="post">
+                <form th:action="@{/send}" th:object="${feedbackForm}" method="post">
                     <!-- Имя -->
                     <div>
                         <input type="text" th:field="*{name}" placeholder="Ваше имя">
@@ -113,7 +113,7 @@
                 </div>
             </div>
 
-            <form th:action="@{/submit-form}" th:object="${feedbackForm}" method="post">
+            <form th:action="@{/send}" th:object="${feedbackForm}" method="post">
                 <!-- Имя -->
                 <div>
                     <input type="text" th:field="*{name}" placeholder="Ваше имя">
