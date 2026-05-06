@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Мы предлагаем услуги разнорабочих">
     <link rel="icon" href="images/icon.ico">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
     <title>MultiFriend</title>
 </head>
 <body>
@@ -46,7 +46,39 @@
                     Команда Multi-friend готова взять эти заботы на себя!
                 </p>
 
-                <button>Заказать работу</button>
+                <form th:action="@{/send}" th:object="${feedbackForm}" method="post">
+                    <!-- Имя -->
+                    <div>
+                        <input type="text" th:field="*{name}" placeholder="Ваше имя">
+                        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></p>
+                    </div>
+
+                    <!-- Тип связи -->
+                    <div>
+                        <label>Как с вами связаться?</label>
+                        <select th:field="*{contactMethod}">
+                            <option value="Telegram">Telegram</option>
+                            <option value="Email">Email</option>
+                            <option value="WhatsApp">WhatsApp</option>
+                            <option value="Phone">Телефонный звонок</option>
+                            <option value="Max">Max</option>
+                        </select>
+                    </div>
+
+                    <!-- Контактные данные -->
+                    <div>
+                        <input type="text" th:field="*{contactInfo}" placeholder="Ваш ник ТГ / почта / номер">
+                        <p th:if="${#fields.hasErrors('contactInfo')}" th:errors="*{contactInfo}" style="color:red"></p>
+                    </div>
+
+                    <!-- Сообщение -->
+                    <div>
+                        <textarea th:field="*{message}" placeholder="Детали заказа"></textarea>
+                        <p th:if="${#fields.hasErrors('message')}" th:errors="*{message}" style="color:red"></p>
+                    </div>
+
+                    <button type="submit">Заказать работу</button>
+                </form>
             </div>
         </section>
 
@@ -82,7 +114,39 @@
                 </div>
             </div>
 
-            <button class="main-btn">Заказать работу</button>
+            <form th:action="@{/send}" th:object="${feedbackForm}" method="post">
+                <!-- Имя -->
+                <div>
+                    <input type="text" th:field="*{name}" placeholder="Ваше имя">
+                    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></p>
+                </div>
+
+                <!-- Тип связи -->
+                <div>
+                    <label>Как с вами связаться?</label>
+                    <select th:field="*{contactMethod}">
+                        <option value="Telegram">Telegram</option>
+                        <option value="Email">Email</option>
+                        <option value="WhatsApp">WhatsApp</option>
+                        <option value="Phone">Телефонный звонок</option>
+                        <option value="Max">Max</option>
+                    </select>
+                </div>
+
+                <!-- Контактные данные -->
+                <div>
+                    <input type="text" th:field="*{contactInfo}" placeholder="Ваш ник ТГ / почта / номер">
+                    <p th:if="${#fields.hasErrors('contactInfo')}" th:errors="*{contactInfo}" style="color:red"></p>
+                </div>
+
+                <!-- Сообщение -->
+                <div>
+                    <textarea th:field="*{message}" placeholder="Детали заказа"></textarea>
+                    <p th:if="${#fields.hasErrors('message')}" th:errors="*{message}" style="color:red"></p>
+                </div>
+
+                <button type="submit">Заказать работу</button>
+            </form>
         </section>
 
         <section class="social">
