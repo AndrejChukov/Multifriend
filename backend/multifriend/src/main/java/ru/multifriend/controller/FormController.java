@@ -36,9 +36,9 @@ public class FormController {
 
         String message = String.format(
                 "Новая заявка с сайта:\n" +
-                        "Имя: \n" + form.getName() +
-                        "Предпочитаемый тип связи: \n" + form.getContactMethod() +
-                        "Контакты: \n" + form.getContactInfo() +
+                        "Имя: " + form.getName() + "\n" +
+                        "Предпочитаемый тип связи: " + form.getContactMethod() + "\n" +
+                        "Контакты: " + form.getContactInfo() + "\n" +
                         "Сообщение: " + form.getMessage()
         );
 

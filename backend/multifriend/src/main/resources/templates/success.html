@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Мы предлагаем услуги разнорабочих">
+    <link rel="icon" href="images/icon.ico">
+    <link rel="stylesheet" href="css/style.css">
+    <title>MultiFriend</title>
+</head>
+<body>
+<header class="header">
+    <div class="container header-content">
+        <img src="images/logo.png" class="logo" alt="логотип">
+
+        <div class="header-text">
+            <h1>Multi<span>Friend</span></h1>
+            <p>Ваш надежный помощник в обслуживании частного дома и участка</p>
+        </div>
+    </div>
+</header>
+<main>
+    <section class="aboutUs">
+        <p>
+            Мы предлагаем полный спектр услуг по обслуживанию домов и участков,
+            чтобы вы могли наслаждаться комфортом, а не тратить выходные на тяжелую работу.
+        </p>
+    </section>
+
+    <section class="services">
+        <h2>Наши услуги</h2>
+
+        <div class="service-card">
+            <div class="before">
+                <h2>До</h2>
+                <img>
+            </div>
+
+            <div class="after">
+                <h2>После</h2>
+                <img>
+            </div>
+
+            <p>
+                Поддержание порядка на частной территории требует много времени и сил.
+                Команда Multi-friend готова взять эти заботы на себя!
+            </p>
+
+            <form th:action="@{/send}" th:object="${feedbackForm}" method="post">
+                <!-- Имя -->
+                <div>
+                    <input type="text" th:field="*{name}" placeholder="Ваше имя">
+                    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></p>
+                </div>
+
+                <!-- Тип связи -->
+                <div>
+                    <label>Как с вами связаться?</label>
+                    <select th:field="*{contactMethod}">
+                        <option value="Telegram">Telegram</option>
+                        <option value="Email">Email</option>
+                        <option value="WhatsApp">WhatsApp</option>
+                        <option value="Phone">Телефонный звонок</option>
+                        <option value="Max">Max</option>
+                    </select>
+                </div>
+
+                <!-- Контактные данные -->
+                <div>
+                    <input type="text" th:field="*{contactInfo}" placeholder="Ваш ник ТГ / почта / номер">
+                    <p th:if="${#fields.hasErrors('contactInfo')}" th:errors="*{contactInfo}" style="color:red"></p>
+                </div>
+
+                <!-- Сообщение -->
+                <div>
+                    <textarea th:field="*{message}" placeholder="Детали заказа"></textarea>
+                    <p th:if="${#fields.hasErrors('message')}" th:errors="*{message}" style="color:red"></p>
+                </div>
+
+                <button type="submit">Заказать работу</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="why">
+        <h2>Почему выбирают нас</h2>
+
+        <div class="features">
+            <h2>Мы делаем свою работу</h2>
+            <div><img src="images/tools.png" class="tools" alt="инструменты">Качественно</div>
+            <div><img src="images/clock.png" class="clock" alt="часы">Быстро</div>
+            <div><img src="images/heart.png" class="heart" alt="сердце">С душой</div>
+        </div>
+
+        <div class="reviews">
+            <div class="review">
+                <b>Алексей</b>
+                <p>Посмотрел, четко почистил, спасибо большое 🤝</p>
+            </div>
+
+            <div class="review">
+                <b>Алексей</b>
+                <p>Спасибо большое за проделанную работу</p>
+            </div>
+
+            <div class="review">
+                <b>Алексей</b>
+                <p>Очень советую ребят. Быстро и чистенько</p>
+            </div>
+
+            <div class="review">
+                <b>Алексей</b>
+                <p>Очень советую ребят. Быстро и чистенько</p>
+            </div>
+        </div>
+
+        <form th:action="@{/send}" th:object="${feedbackForm}" method="post">
+            <!-- Имя -->
+            <div>
+                <input type="text" th:field="*{name}" placeholder="Ваше имя">
+                <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></p>
+            </div>
+
+            <!-- Тип связи -->
+            <div>
+                <label>Как с вами связаться?</label>
+                <select th:field="*{contactMethod}">
+                    <option value="Telegram">Telegram</option>
+                    <option value="Email">Email</option>
+                    <option value="WhatsApp">WhatsApp</option>
+                    <option value="Phone">Телефонный звонок</option>
+                    <option value="Max">Max</option>
+                </select>
+            </div>
+
+            <!-- Контактные данные -->
+            <div>
+                <input type="text" th:field="*{contactInfo}" placeholder="Ваш ник ТГ / почта / номер">
+                <p th:if="${#fields.hasErrors('contactInfo')}" th:errors="*{contactInfo}" style="color:red"></p>
+            </div>
+
+            <!-- Сообщение -->
+            <div>
+                <textarea th:field="*{message}" placeholder="Детали заказа"></textarea>
+                <p th:if="${#fields.hasErrors('message')}" th:errors="*{message}" style="color:red"></p>
+            </div>
+
+            <button type="submit">Заказать работу</button>
+        </form>
+    </section>
+
+    <section class="social">
+        <h2>Социальная поддержка</h2>
+        <p>Мы ценим наших пожилых клиентов и предоставляем скидку 25% пенсионерам.</p>
+    </section>
+</main>
+
+<footer>
+    <section class="contacts">
+        <h2>Контакты</h2>
+
+        <div class="contact-buttons">
+            <a href="" class="tg"><img src="images/tg.png" class="tg" alt="телега">Telegram</a>
+            <a href="" class="whatsApp"><img src="images/whatsapp.jpg" class="whatsApp" alt="вацап">WhatsApp</a>
+        </div>
+    </section>
+</footer>
+</body>
+</html>
