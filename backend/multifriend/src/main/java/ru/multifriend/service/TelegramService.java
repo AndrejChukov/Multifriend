@@ -3,6 +3,7 @@ package ru.multifriend.service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class TelegramService {
@@ -16,13 +17,18 @@ public class TelegramService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     public void sendMessage(String text) {
-        String url = String.format("https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s&parse_mode=Markdown",
-                botToken, chatId, text);
+        String url = UriComponentsBuilder
+                .fromHttpUrl("https://api.telegram.org/bot" + botToken + "/sendMessage")
+                .queryParam("chat_id", chatId)
+                .queryParam("text", text)
+                .queryParam("parse_mode", "Markdown")
+                .build()
+                .toUriString();
 
         try {
             restTemplate.getForObject(url, String.class);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Ошибка при отправке: " + e.getMessage());
         }
     }
 }
