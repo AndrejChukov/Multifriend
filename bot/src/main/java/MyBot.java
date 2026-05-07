@@ -1,7 +1,12 @@
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.media.InputMediaPhoto;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -47,7 +52,7 @@ public class MyBot extends TelegramLongPollingBot {
             case "main_menu":
                 this.updateMenu(chatId, messageId, "Главное меню", this.getMainMenuKeyboard());
                 return;
-            case "services_categories":
+            case "services", "services_categories":
                 this.updateMenu(chatId, messageId, "Выберите категорию услуг:", this.getServicesCategoriesKeyboard());
                 return;
             case "cat_cleaning":
@@ -84,11 +89,29 @@ public class MyBot extends TelegramLongPollingBot {
                 showServiceInfo(chatId, messageId, "siding");
                 break;
             case "reviews":
-                updateMenu(chatId, messageId, "Отзывы\n\nЗдесь будут отзывы наших клиентов", getBackKeyboard());
-                break;
+                this.updateMenu(chatId, messageId, "Отзывы\n\nВыберите категорию:", this.getServicesCategoriesKeyboard());
+                return;
+            case "reviews_cleaning":
+                showReviews(chatId, messageId, "cleaning");
+                return;
+            case "reviews_lawn":
+                showReviews(chatId, messageId, "lawn");
+                return;
+            case "reviews_repair":
+                showReviews(chatId, messageId, "repair");
+                return;
             case "portfolio":
-                updateMenu(chatId, messageId, "Примеры работ\n\nЗдесь будут фото наших работ", getBackKeyboard());
-                break;
+                this.updateMenu(chatId, messageId, "Примеры работ\n\nВыберите категорию:", this.getPortfolioCategoriesKeyboard());
+                return;
+            case "portfolio_cleaning":
+                sendPortfolioPhoto(chatId, messageId, "cleaning");
+                return;
+            case "portfolio_lawn":
+                sendPortfolioPhoto(chatId, messageId, "lawn");
+                return;
+            case "portfolio_repair":
+                sendPortfolioPhoto(chatId, messageId, "repair");
+                return;
             default:
                 updateMenu(chatId, messageId, "Команда не найдена", getBackKeyboard());
         }
@@ -327,4 +350,163 @@ public class MyBot extends TelegramLongPollingBot {
         row.add(button);
         return row;
     }
+
+    private InlineKeyboardMarkup getReviewsLinksKeyboard() {
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+
+        // Ряд со ссылками на отзывы
+        List<InlineKeyboardButton> linksRow = new ArrayList<>();
+
+        InlineKeyboardButton yandexButton = new InlineKeyboardButton();
+        yandexButton.setText("Яндекс Отзывы");
+        yandexButton.setUrl(""); // Пустая ссылка, потом вставить
+        linksRow.add(yandexButton);
+
+        InlineKeyboardButton dubleGISButton = new InlineKeyboardButton();
+        dubleGISButton.setText("2ГИС Отзывы");
+        dubleGISButton.setUrl(""); // Пустая ссылка, потом вставить
+        linksRow.add(dubleGISButton);
+
+        InlineKeyboardButton avitoButton = new InlineKeyboardButton();
+        avitoButton.setText("Авито Отзывы");
+        avitoButton.setUrl(""); // Пустая ссылка, потом вставить
+        linksRow.add(avitoButton);
+
+        rows.add(linksRow);
+
+        rows.add(createRow("Назад", "reviews"));
+
+        markup.setKeyboard(rows);
+        return markup;
+    }
+
+    private void showReviews(long chatId, int messageId, String serviceType) {
+        String title = "";
+        String reviews = "";
+
+        switch (serviceType) {
+            case "cleaning":
+                title = "Уборка территории";
+                reviews = "Отзывы об уборке территории:\n\n" +
+                        "Анна: «Заказала чистку снега зимой. Приехали быстро, всё убрали, даже крыльцо посыпали. Рекомендую!»\n\n" +
+                        "Сергей: «Вывозили мусор после стройки. Приехали вовремя, загрузили всё аккуратно. Цена адекватная. Спасибо!»\n\n" +
+                        "Елена: «Облагородили участок — посадили туи, разбили клумбу. Теперь двор как картинка!»";
+                break;
+            case "lawn":
+                title = "Уход за газоном";
+                reviews = "Отзывы об уходе за газоном:\n\n" +
+                        "Дмитрий: «Засадили газон с нуля. Трава взошла ровно, зеленая и густая. Очень доволен!»\n\n" +
+                        "Ольга: «Стригут газон раз в две недели. Всегда вовремя, аккуратно, траву увозят. Отличный сервис!»\n\n" +
+                        "Игорь: «Помогли реанимировать старый газон. Сделали аэрацию, подсеяли траву. Теперь как новый!»";
+                break;
+            case "repair":
+                title = "Ремонт и строительство";
+                reviews = "Отзывы о ремонте и строительстве:\n\n" +
+                        "Михаил: «Залили бетонную площадку под машину. Всё ровно, качественно, цена отличная!»\n\n" +
+                        "Татьяна: «Установили забор из профнастила за 2 дня. Соседи уже тоже хотят такой!»\n\n" +
+                        "Алексей: «Обшили баню вагонкой. Работают чисто, аккуратно, мусор вывезли. Буду заказывать ещё!»";
+                break;
+            default:
+                return;
+        }
+
+        String fullText = title + "\n\n" + reviews + "\n\nБольше отзывов по ссылкам ниже:";
+
+        EditMessageText editMessage = new EditMessageText();
+        editMessage.setChatId(String.valueOf(chatId));
+        editMessage.setMessageId(messageId);
+        editMessage.setText(fullText);
+        editMessage.setParseMode("Markdown");
+        editMessage.setReplyMarkup(getReviewsLinksKeyboard());
+
+        try {
+            this.execute(editMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private InlineKeyboardMarkup getPortfolioCategoriesKeyboard() {
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rows = new ArrayList();
+
+        rows.add(createRow("Уборка территории", "portfolio_cleaning"));
+        rows.add(createRow("Уход за газоном", "portfolio_lawn"));
+        rows.add(createRow("Ремонт и строительство", "portfolio_repair"));
+        rows.add(createRow("Назад", "main_menu"));
+
+        markup.setKeyboard(rows);
+        return markup;
+    }
+
+    // Пока оставлю так, потом надо будет доделать (добавить пути фото)
+//    private void sendPortfolioPhoto(long chatId, int messageId, String category) {
+//        String title = "";
+//        String description = "";
+//        String beforePhoto = "";
+//        String afterPhoto = "";
+//
+//        switch (category) {
+//            case "cleaning":
+//                title = "Уборка территории";
+//                description = "Уборка снега с территории частного дома";
+//                beforePhoto = "cleaning_before.jpg";
+//                afterPhoto = "cleaning_after.jpg";
+//                break;
+//            case "lawn":
+//                title = "Уход за газоном";
+//                description = "Стрижка газона после обработки";
+//                beforePhoto = "lawn_before.jpg";
+//                afterPhoto = "lawn_after.jpg";
+//                break;
+//            case "repair":
+//                title = "Ремонт и строительство";
+//                description = "Установка забора под ключ";
+//                beforePhoto = "fence_before.jpg";
+//                afterPhoto = "fence_after.jpg";
+//                break;
+//            default:
+//                return;
+//        }
+//
+//        // Удаляем старое сообщение с меню
+//        DeleteMessage deleteMessage = new DeleteMessage();
+//        deleteMessage.setChatId(String.valueOf(chatId));
+//        deleteMessage.setMessageId(messageId);
+//        this.execute(deleteMessage);
+//
+//        // Отправляем текст-описание
+//        SendMessage descriptionText = new SendMessage();
+//        descriptionText.setChatId(String.valueOf(chatId));
+//        descriptionText.setText(String.format("*%s*\n\n%s\n\nРезультат работы:", title, description));
+//        descriptionText.setParseMode("Markdown");
+//        this.execute(descriptionText);
+//
+//        // Создаём альбом с двумя фото
+//        List<InputMediaPhoto> mediaList = new ArrayList<>();
+//
+//        InputMediaPhoto before = new InputMediaPhoto();
+//        before.setMedia(new InputFile(new File("src/main/resources/photos/" + beforePhoto)));
+//        before.setCaption("До");
+//        mediaList.add(before);
+//
+//        InputMediaPhoto after = new InputMediaPhoto();
+//        after.setMedia(new InputFile(new File("src/main/resources/photos/" + afterPhoto)));
+//        after.setCaption("После");
+//        mediaList.add(after);
+//
+//        // Отправляем альбом
+//        SendMediaGroup mediaGroup = new SendMediaGroup();
+//        mediaGroup.setChatId(String.valueOf(chatId));
+//        mediaGroup.setMedias(mediaList);
+//        this.execute(mediaGroup);
+
+//        SendMessage buttonsMsg = new SendMessage();
+//        buttonsMsg.setChatId(String.valueOf(chatId));
+//        buttonsMsg.setText("Больше отзывов по ссылкам ниже:");
+//        buttonsMsg.setParseMode("Markdown");
+//        buttonsMsg.setReplyMarkup(getReviewsLinksKeyboard());
+//        this.execute(buttonsMsg);
+//    }
 }
