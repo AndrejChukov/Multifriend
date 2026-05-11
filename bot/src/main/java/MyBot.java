@@ -10,9 +10,10 @@ import org.telegram.telegrambots.meta.api.objects.media.InputMediaPhoto;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class MyBot extends TelegramLongPollingBot {
 
@@ -440,73 +441,66 @@ public class MyBot extends TelegramLongPollingBot {
         return markup;
     }
 
-    // Пока оставлю так, потом надо будет доделать (добавить пути фото)
-//    private void sendPortfolioPhoto(long chatId, int messageId, String category) {
-//        String title = "";
-//        String description = "";
-//        String beforePhoto = "";
-//        String afterPhoto = "";
-//
-//        switch (category) {
-//            case "cleaning":
-//                title = "Уборка территории";
-//                description = "Уборка снега с территории частного дома";
-//                beforePhoto = "cleaning_before.jpg";
-//                afterPhoto = "cleaning_after.jpg";
-//                break;
-//            case "lawn":
-//                title = "Уход за газоном";
-//                description = "Стрижка газона после обработки";
-//                beforePhoto = "lawn_before.jpg";
-//                afterPhoto = "lawn_after.jpg";
-//                break;
-//            case "repair":
-//                title = "Ремонт и строительство";
-//                description = "Установка забора под ключ";
-//                beforePhoto = "fence_before.jpg";
-//                afterPhoto = "fence_after.jpg";
-//                break;
-//            default:
-//                return;
-//        }
-//
-//        // Удаляем старое сообщение с меню
-//        DeleteMessage deleteMessage = new DeleteMessage();
-//        deleteMessage.setChatId(String.valueOf(chatId));
-//        deleteMessage.setMessageId(messageId);
-//        this.execute(deleteMessage);
-//
-//        // Отправляем текст-описание
-//        SendMessage descriptionText = new SendMessage();
-//        descriptionText.setChatId(String.valueOf(chatId));
-//        descriptionText.setText(String.format("*%s*\n\n%s\n\nРезультат работы:", title, description));
-//        descriptionText.setParseMode("Markdown");
-//        this.execute(descriptionText);
-//
-//        // Создаём альбом с двумя фото
-//        List<InputMediaPhoto> mediaList = new ArrayList<>();
-//
-//        InputMediaPhoto before = new InputMediaPhoto();
-//        before.setMedia(new InputFile(new File("src/main/resources/photos/" + beforePhoto)));
-//        before.setCaption("До");
-//        mediaList.add(before);
-//
-//        InputMediaPhoto after = new InputMediaPhoto();
-//        after.setMedia(new InputFile(new File("src/main/resources/photos/" + afterPhoto)));
-//        after.setCaption("После");
-//        mediaList.add(after);
-//
-//        // Отправляем альбом
-//        SendMediaGroup mediaGroup = new SendMediaGroup();
-//        mediaGroup.setChatId(String.valueOf(chatId));
-//        mediaGroup.setMedias(mediaList);
-//        this.execute(mediaGroup);
+    private void sendPortfolioPhoto(long chatId, int messageId, String category) {
+        String title = "";
+        String description = "";
+        String beforePhoto = "";
+        String afterPhoto = "";
 
-//        SendMessage buttonsMsg = new SendMessage();
-//        buttonsMsg.setChatId(String.valueOf(chatId));
-//        buttonsMsg.setText("Больше отзывов по ссылкам ниже:");
-//        buttonsMsg.setParseMode("Markdown");
-//        buttonsMsg.setReplyMarkup(getReviewsLinksKeyboard());
-//        this.execute(buttonsMsg);
-//    }
+        switch (category) {
+            case "cleaning":
+                title = "Уборка территории";
+                description = "Уборка снега с территории частного дома";
+                beforePhoto = "cleaning_before.png";
+                afterPhoto = "cleaning_after.png";
+                break;
+            case "lawn":
+                title = "Уход за газоном";
+                description = "Стрижка газона после обработки";
+                beforePhoto = "lawn_before.png";
+                afterPhoto = "lawn_after.png";
+                break;
+            case "repair":
+                title = "Ремонт и строительство";
+                description = "Установка забора под ключ";
+                beforePhoto = "fence_before.png";
+                afterPhoto = "fence_after.png";
+                break;
+            default:
+                return;
+        }
+
+        try {
+            // Отправляем текст с описанием
+            SendMessage textMsg = new SendMessage();
+            textMsg.setChatId(String.valueOf(chatId));
+            textMsg.setText("*" + title + "*\n\n" + description + "\n\nРезультат работы:");
+            textMsg.setParseMode("Markdown");
+            execute(textMsg);
+
+            // Отправляем первое фото (ДО)
+            SendPhoto photoBefore = new SendPhoto();
+            photoBefore.setChatId(String.valueOf(chatId));
+            photoBefore.setCaption("До");
+            photoBefore.setPhoto(new InputFile(new File("src/main/resources/photos/" + beforePhoto)));
+            execute(photoBefore);
+
+            // Отправляем второе фото (ПОСЛЕ)
+            SendPhoto photoAfter = new SendPhoto();
+            photoAfter.setChatId(String.valueOf(chatId));
+            photoAfter.setCaption("После");
+            photoAfter.setPhoto(new InputFile(new File("src/main/resources/photos/" + afterPhoto)));
+            execute(photoAfter);
+
+            // Отправляем кнопки со ссылками на отзывы
+            SendMessage buttonsMsg = new SendMessage();
+            buttonsMsg.setChatId(String.valueOf(chatId));
+            buttonsMsg.setText("Больше отзывов по ссылкам ниже:");
+            buttonsMsg.setReplyMarkup(getReviewsLinksKeyboard());
+            execute(buttonsMsg);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
