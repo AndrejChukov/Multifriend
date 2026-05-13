@@ -90,7 +90,7 @@ public class MyBot extends TelegramLongPollingBot {
                 showServiceInfo(chatId, messageId, "siding");
                 break;
             case "reviews":
-                this.updateMenu(chatId, messageId, "Отзывы\n\nВыберите категорию:", this.getServicesCategoriesKeyboard());
+                this.updateMenu(chatId, messageId, "Отзывы\n\nВыберите категорию:", this.getReviewsCategoriesKeyboard());
                 return;
             case "reviews_cleaning":
                 showReviews(chatId, messageId, "cleaning");
@@ -350,6 +350,19 @@ public class MyBot extends TelegramLongPollingBot {
         button.setUrl(url);
         row.add(button);
         return row;
+    }
+
+    private InlineKeyboardMarkup getReviewsCategoriesKeyboard() {
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rows = new ArrayList();
+
+        rows.add(createRow("Уборка территории", "reviews_cleaning"));
+        rows.add(createRow("Уход за газоном", "reviews_lawn"));
+        rows.add(createRow("Ремонт и строительство", "reviews_repair"));
+        rows.add(createRow("Назад", "main_menu"));
+
+        markup.setKeyboard(rows);
+        return markup;
     }
 
     private InlineKeyboardMarkup getReviewsLinksKeyboard() {
