@@ -18,6 +18,9 @@ import java.util.List;
 public class MyBot extends TelegramLongPollingBot {
 
     private static final String ORDER_FORM_URL = "https://forms.gle/MLn6imNP8pJ5YMPm8";
+    private static final String YANDEX_URL = "https://yandex.ru";
+    private static final String DOUBLE_GIS_URL = "https://2gis.ru";
+    private static final String AVITO_URL = "https://avito.ru";
 
     @Override
     public String getBotUsername() {
@@ -49,6 +52,8 @@ public class MyBot extends TelegramLongPollingBot {
     }
 
     private void handleCallback(long chatId, int messageId, String data) {
+        System.out.println("🔔 ПОЛУЧЕН CALLBACK: " + data);
+
         switch (data) {
             case "main_menu":
                 this.updateMenu(chatId, messageId, "Главное меню", this.getMainMenuKeyboard());
@@ -190,7 +195,7 @@ public class MyBot extends TelegramLongPollingBot {
         rows.add(this.createRow("Чистка снега", "service_snow"));
         rows.add(this.createRow("Вывоз мусора", "service_garbage"));
         rows.add(this.createRow("Облагораживание участка", "service_landscape"));
-        rows.add(this.createRow("Назад", "services_categories"));
+        rows.add(this.createRow("Назад", "main_menu"));
         markup.setKeyboard(rows);
         return markup;
     }
@@ -201,7 +206,7 @@ public class MyBot extends TelegramLongPollingBot {
         List<List<InlineKeyboardButton>> rows = new ArrayList();
         rows.add(this.createRow("Засадка газона", "service_planting"));
         rows.add(this.createRow("Стрижка газона", "service_mowing"));
-        rows.add(this.createRow("Назад", "services_categories"));
+        rows.add(this.createRow("Назад", "main_menu"));
         markup.setKeyboard(rows);
         return markup;
     }
@@ -213,7 +218,7 @@ public class MyBot extends TelegramLongPollingBot {
         rows.add(this.createRow("Заливка бетона", "service_concrete"));
         rows.add(this.createRow("Установка забора", "service_fence"));
         rows.add(this.createRow("Обшивка построек", "service_siding"));
-        rows.add(this.createRow("Назад", "services_categories"));
+        rows.add(this.createRow("Назад", "main_menu"));
         markup.setKeyboard(rows);
         return markup;
     }
@@ -289,7 +294,7 @@ public class MyBot extends TelegramLongPollingBot {
                 break;
         }
 
-        String fullText = String.format("*%s*\n\n%s\n\n %s\n\nДля записи нажмите /order",
+        String fullText = String.format("*%s*\n\n%s\n\n %s\n\nДля записи нажмите:",
                 title, description, price);
 
         // Отправляем информацию с кнопкой "Назад к услугам"
@@ -369,26 +374,9 @@ public class MyBot extends TelegramLongPollingBot {
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
 
-        // Ряд со ссылками на отзывы
-        List<InlineKeyboardButton> linksRow = new ArrayList<>();
-
-        InlineKeyboardButton yandexButton = new InlineKeyboardButton();
-        yandexButton.setText("Яндекс Отзывы");
-        yandexButton.setUrl(""); // Пустая ссылка, потом вставить
-        linksRow.add(yandexButton);
-
-        InlineKeyboardButton dubleGISButton = new InlineKeyboardButton();
-        dubleGISButton.setText("2ГИС Отзывы");
-        dubleGISButton.setUrl(""); // Пустая ссылка, потом вставить
-        linksRow.add(dubleGISButton);
-
-        InlineKeyboardButton avitoButton = new InlineKeyboardButton();
-        avitoButton.setText("Авито Отзывы");
-        avitoButton.setUrl(""); // Пустая ссылка, потом вставить
-        linksRow.add(avitoButton);
-
-        rows.add(linksRow);
-
+        rows.add(createUrlRow("Яндекс Отзывы", YANDEX_URL));
+        rows.add(createUrlRow("2ГИС Отзывы", DOUBLE_GIS_URL));
+        rows.add(createUrlRow("Авито Отзывы", AVITO_URL));
         rows.add(createRow("Назад", "reviews"));
 
         markup.setKeyboard(rows);
@@ -402,24 +390,24 @@ public class MyBot extends TelegramLongPollingBot {
         switch (serviceType) {
             case "cleaning":
                 title = "Уборка территории";
-                reviews = "Отзывы об уборке территории:\n\n" +
-                        "Анна: «Заказала чистку снега зимой. Приехали быстро, всё убрали, даже крыльцо посыпали. Рекомендую!»\n\n" +
-                        "Сергей: «Вывозили мусор после стройки. Приехали вовремя, загрузили всё аккуратно. Цена адекватная. Спасибо!»\n\n" +
-                        "Елена: «Облагородили участок — посадили туи, разбили клумбу. Теперь двор как картинка!»";
+                reviews = "*Отзывы об уборке территории:*\n\n" +
+                        "*Анна:* Заказала чистку снега зимой. Приехали быстро, всё убрали, даже крыльцо посыпали. Рекомендую!\n\n" +
+                        "*Сергей:* Вывозили мусор после стройки. Приехали вовремя, загрузили всё аккуратно. Цена адекватная. Спасибо!\n\n" +
+                        "*Елена:* Облагородили участок — посадили туи, разбили клумбу. Теперь двор как картинка!";
                 break;
             case "lawn":
                 title = "Уход за газоном";
-                reviews = "Отзывы об уходе за газоном:\n\n" +
-                        "Дмитрий: «Засадили газон с нуля. Трава взошла ровно, зеленая и густая. Очень доволен!»\n\n" +
-                        "Ольга: «Стригут газон раз в две недели. Всегда вовремя, аккуратно, траву увозят. Отличный сервис!»\n\n" +
-                        "Игорь: «Помогли реанимировать старый газон. Сделали аэрацию, подсеяли траву. Теперь как новый!»";
+                reviews = "*Отзывы об уходе за газоном:*\n\n" +
+                        "*Дмитрий:* Засадили газон с нуля. Трава взошла ровно, зеленая и густая. Очень доволен!\n\n" +
+                        "*Ольга:* Стригут газон раз в две недели. Всегда вовремя, аккуратно, траву увозят. Отличный сервис!\n\n" +
+                        "*Игорь:* Помогли реанимировать старый газон. Сделали аэрацию, подсеяли траву. Теперь как новый!";
                 break;
             case "repair":
                 title = "Ремонт и строительство";
-                reviews = "Отзывы о ремонте и строительстве:\n\n" +
-                        "Михаил: «Залили бетонную площадку под машину. Всё ровно, качественно, цена отличная!»\n\n" +
-                        "Татьяна: «Установили забор из профнастила за 2 дня. Соседи уже тоже хотят такой!»\n\n" +
-                        "Алексей: «Обшили баню вагонкой. Работают чисто, аккуратно, мусор вывезли. Буду заказывать ещё!»";
+                reviews = "*Отзывы о ремонте и строительстве:*\n\n" +
+                        "*Михаил:* Залили бетонную площадку под машину. Всё ровно, качественно, цена отличная!\n\n" +
+                        "*Татьяна:* Установили забор из профнастила за 2 дня. Соседи уже тоже хотят такой!\n\n" +
+                        "*Алексей:* Обшили баню вагонкой. Работают чисто, аккуратно, мусор вывезли. Буду заказывать ещё!";
                 break;
             default:
                 return;
@@ -439,6 +427,19 @@ public class MyBot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
+    }
+
+    private InlineKeyboardMarkup getPortfolioLinksKeyboard() {
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+
+        rows.add(createUrlRow("Яндекс Отзывы", YANDEX_URL));
+        rows.add(createUrlRow("2ГИС Отзывы", DOUBLE_GIS_URL));
+        rows.add(createUrlRow("Авито Отзывы", AVITO_URL));
+        rows.add(createRow("Назад", "portfolio"));
+
+        markup.setKeyboard(rows);
+        return markup;
     }
 
     private InlineKeyboardMarkup getPortfolioCategoriesKeyboard() {
@@ -509,7 +510,7 @@ public class MyBot extends TelegramLongPollingBot {
             SendMessage buttonsMsg = new SendMessage();
             buttonsMsg.setChatId(String.valueOf(chatId));
             buttonsMsg.setText("Больше отзывов по ссылкам ниже:");
-            buttonsMsg.setReplyMarkup(getReviewsLinksKeyboard());
+            buttonsMsg.setReplyMarkup(getPortfolioLinksKeyboard());
             execute(buttonsMsg);
 
         } catch (Exception e) {
