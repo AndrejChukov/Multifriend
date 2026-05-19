@@ -1,16 +1,13 @@
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.media.InputMediaPhoto;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -492,19 +489,9 @@ public class MyBot extends TelegramLongPollingBot {
             textMsg.setParseMode("Markdown");
             execute(textMsg);
 
-            // Отправляем первое фото (ДО)
-            SendPhoto photoBefore = new SendPhoto();
-            photoBefore.setChatId(String.valueOf(chatId));
-            photoBefore.setCaption("До");
-            photoBefore.setPhoto(new InputFile(new File("src/main/resources/photos/" + beforePhoto)));
-            execute(photoBefore);
-
-            // Отправляем второе фото (ПОСЛЕ)
-            SendPhoto photoAfter = new SendPhoto();
-            photoAfter.setChatId(String.valueOf(chatId));
-            photoAfter.setCaption("После");
-            photoAfter.setPhoto(new InputFile(new File("src/main/resources/photos/" + afterPhoto)));
-            execute(photoAfter);
+            // Отправляем фото с проверкой существования
+            sendPhotoIfExists(chatId, beforePhoto, "До");
+            sendPhotoIfExists(chatId, afterPhoto, "После");
 
             // Отправляем кнопки со ссылками на отзывы
             SendMessage buttonsMsg = new SendMessage();
@@ -517,4 +504,26 @@ public class MyBot extends TelegramLongPollingBot {
             e.printStackTrace();
         }
     }
+
+    // Вспомогательный метод для отправки фото
+    private void sendPhotoIfExists(long chatId, String photoName, String caption) {
+        try {
+            InputStream photoStream = getClass().getClassLoader()
+                    .getResourceAsStream("photos/" + photoName);
+
+            if (photoStream == null) {
+                System.err.println("Файл не найден: photos/" + photoName);
+                return;
+            }
+
+            SendPhoto photo = new SendPhoto();
+            photo.setChatId(String.valueOf(chatId));
+            photo.setCaption(caption);
+            photo.setPhoto(new InputFile(photoStream, photoName));
+            execute(photo);
+        } catch (Exception e) {
+            System.err.println("Ошибка при отправке фото " + photoName + ": " + e.getMessage());
+        }
+    }
+
 }
