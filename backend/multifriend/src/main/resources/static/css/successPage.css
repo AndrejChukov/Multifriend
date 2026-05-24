@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Russo+One&display=swap');
+:root {
+    --bg-main: #2E8B3C;
+    --bg-about: #DBD4C8;
+    --accent-orange: #FF8800;
+    --text-orange: #E48C00;
+    --card-review: rgba(249, 249, 249, 0.5);
+
+    --font-heading: 'Russo One', sans-serif;
+    --font-body: 'Open Sans', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+h2{
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 400;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+body {
+    background-color: var(--bg-main);
+    font-family: var(--font-body);
+    color: #FFFFFF;
+    overflow-x: hidden;
+}
+.header {
+     position: relative;
+     padding: 43px 1.5rem 2rem;
+     max-width: 1000px;
+     margin: 0 auto;
+ }
+
+.header-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.logo {
+    width: 106px;
+    height: 106px;
+}
+
+.header-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header-text h1 {
+    position: relative;
+    z-index: 1;
+    width: 194px;
+    height: 25px;
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 100%;
+    text-align: center;
+}
+
+.header-text h1::before {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 278px;
+    top: -99px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: radial-gradient(50% 50% at 50% 50%, rgba(255, 230, 163, 0.4) 13.94%, rgba(153, 138, 98, 0) 100%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.header-text h1 span {
+    color: var(--text-orange);
+}
+
+.header-text p {
+    width: 181px;
+    height: 48px;
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 100%;
+    text-align: center;
+    margin-top: 15px;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.successBlock{
+    background-color: var(--accent-orange);
+    border-radius: 24px;
+    padding: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    text-align: center;
+    flex-direction: column;
+}
+.successBlock button{
+    width: 100%;
+    padding: 15px;
+    background-color: #FFFFFF;
+    color: #000000;
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-heading);
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+@media (min-width: 1440px) {
+    .header {
+        max-width: 1180px;
+        padding-top: 55px;
+    }
+
+    .header-content {
+        gap: 35px;
+    }
+
+    .logo {
+        width: 125px;
+        height: 125px;
+    }
+
+    .header-text h1 {
+        width: auto;
+        height: auto;
+        font-size: 36px;
+    }
+
+    .header-text p {
+        width: 360px;
+        height: auto;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    h2 {
+        font-size: 32px;
+    }
+    .successBlock {
+        max-width: 600px;
+    }
+
+    .successBlock h2 {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 420px) {
+
+    .header-content {
+        gap: 10px;
+    }
+
+    .header-text p {
+        font-size: 10px;
+    }
+
+    .successBlock {
+        padding: 1.2rem;
+        gap: 0.5rem;
+    }
+
+    .successBlock h2 {
+        font-size: 18px;
+    }
+}

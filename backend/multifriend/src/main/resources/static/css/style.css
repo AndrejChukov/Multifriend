@@ -386,3 +386,136 @@ form button {
     height: 23px;
     border-radius: 36px;
 }
+@media (min-width: 1440px) {
+
+    section {
+        max-width: 1180px;
+    }
+
+    .header {
+        max-width: 1180px;
+        padding-top: 55px;
+    }
+
+    .header-content {
+        gap: 35px;
+    }
+
+    .logo {
+        width: 125px;
+        height: 125px;
+    }
+
+    .header-text h1 {
+        width: auto;
+        height: auto;
+        font-size: 36px;
+    }
+
+    .header-text p {
+        width: 360px;
+        height: auto;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    h2 {
+        font-size: 32px;
+    }
+
+    h3 {
+        font-size: 24px;
+    }
+
+    .aboutUs {
+        padding: 4rem 2rem;
+    }
+
+    .aboutUs p {
+        max-width: 900px;
+        font-size: 18px;
+        line-height: 1.6;
+    }
+
+    .service-card {
+        max-width: 950px;
+        margin: 0 auto;
+        padding: 2.3rem;
+        gap: 1.5rem;
+    }
+
+    .before,
+    .after {
+        flex: 1 1 320px;
+    }
+
+    .before h2,
+    .after h2 {
+        font-size: 26px;
+    }
+
+    .before img,
+    .after img {
+        height: 230px;
+    }
+
+    .service-card > p {
+        max-width: 720px;
+        margin: 0 auto;
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    .reviews {
+        max-width: 950px;
+        margin: 0 auto 3rem;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.2rem;
+    }
+
+    .review {
+        padding: 1.1rem;
+        border-radius: 14px;
+    }
+
+    .review img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .review b {
+        font-size: 15px;
+    }
+
+    .review p {
+        font-size: 12px;
+        line-height: 1.5;
+        margin-top: 10px;
+    }
+
+    form {
+        max-width: 620px;
+        padding: 2.5rem;
+    }
+
+    form input,
+    form select,
+    form textarea {
+        font-size: 16px;
+        padding: 15px;
+    }
+
+    form button {
+        font-size: 18px;
+        padding: 16px;
+    }
+
+    .social p {
+        font-size: 16px;
+    }
+
+    .contact-buttons a {
+        font-size: 22px;
+        padding: 14px 28px;
+    }
+}
