@@ -21,6 +21,7 @@ public class MyBot extends TelegramLongPollingBot {
     private static final String YANDEX_URL = "https://yandex.ru";
     private static final String DOUBLE_GIS_URL = "https://2gis.ru";
     private static final String AVITO_URL = "https://avito.ru";
+    private static final String TOKEN = "8547798294:AAGA-ySrSYoJc5cWvyaUrMGsmu3mayjj7gA";
 
     @Override
     public String getBotUsername() {
@@ -29,7 +30,7 @@ public class MyBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "8547798294:AAGA-ySrSYoJc5cWvyaUrMGsmu3mayjj7gA";
+        return TOKEN;
     }
 
     @Override
