@@ -93,7 +93,7 @@ img:not([src]) {
 
 .header {
     position: relative;
-    padding: 43px 1.5rem 2rem;
+    padding: 20px 1.5rem 5px; /* Уменьшен отступ сверху и снизу */
     max-width: 1000px;
     margin: 0 auto;
 }
@@ -105,12 +105,12 @@ img:not([src]) {
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 70px; /* Уменьшено расстояние между лого и текстом */
 }
 
 .logo {
-    width: 106px;
-    height: 106px;
+    width: 150px; /* Размер логотипа под твое фото */
+    height: 150px;
 }
 
 .header-text {
@@ -156,7 +156,7 @@ img:not([src]) {
     font-size: 12px;
     line-height: 100%;
     text-align: center;
-    margin-top: 15px;
+    margin-top: 10px; /* Уменьшен отступ текста от заголовка */
 }
 
 .aboutUs {
