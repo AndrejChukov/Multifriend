@@ -44,6 +44,7 @@ h2 {
     gap: 15px;
 }
 
+
 h2::before {
     content: '';
     display: block;
@@ -53,6 +54,10 @@ h2::before {
     backdrop-filter: blur(1px);
 }
 
+.services img{
+    border-radius: 15px;
+}
+
 h2::after {
     content: '';
     display: block;
@@ -60,6 +65,15 @@ h2::after {
     height: 1px;
     background: linear-gradient(90deg, #FFE69F 0.01%, rgba(255, 255, 255, 0) 100%);
     backdrop-filter: blur(1px);
+}
+
+h3{
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 400;
+    color: #FFFFFF;
+    margin-bottom: 2rem;
+    justify-content: center;
 }
 
 .service-card h2::before,
@@ -272,6 +286,16 @@ img:not([src]) {
 .review p {
     font-family: var(--font-heading);
     font-size: 12px;
+    margin-top:12px ;
+}
+.review img{
+    width: 50px;
+    height: 50px;
+}
+.review div{
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 form {
@@ -329,10 +353,6 @@ form button {
     font-family: var(--font-heading);
     font-size: 12px;
     text-align: center;
-}
-
-footer {
-    padding-bottom: 4rem;
 }
 
 .contact-buttons {
