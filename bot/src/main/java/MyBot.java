@@ -488,21 +488,22 @@ public class MyBot extends TelegramLongPollingBot {
             // 1. Готовим список медиафайлов для альбома
             List<InputMedia> mediaGroup = new ArrayList<>();
 
-            // Формируем общий текст, который прикрепим к первой фотографии
+            // Формируем чистый текст (title и description) для подписи под альбомом
             String fullCaption = "*" + title + "*\n\n" + description;
 
-            // Загружаем и добавляем фото в альбом
+            // Загружаем и добавляем первое фото ("До") с главным описанием
             InputMediaPhoto mediaBefore = createInputMediaPhoto(beforePhoto, fullCaption, "Markdown");
             if (mediaBefore != null) {
                 mediaGroup.add(mediaBefore);
             }
 
-            InputMediaPhoto mediaAfter = createInputMediaPhoto(afterPhoto, null, null); // Убрали подпись "После" из самого альбома, так как выводим её текстом ниже
+            // Загружаем и добавляем второе фото ("После") без внутренней подписи
+            InputMediaPhoto mediaAfter = createInputMediaPhoto(afterPhoto, null, null);
             if (mediaAfter != null) {
                 mediaGroup.add(mediaAfter);
             }
 
-            // 2. Отправляем альбом, если в нем есть фото
+            // 2. Отправляем альбом
             if (!mediaGroup.isEmpty()) {
                 SendMediaGroup sendMediaGroup = new SendMediaGroup();
                 sendMediaGroup.setChatId(String.valueOf(chatId));
@@ -510,13 +511,7 @@ public class MyBot extends TelegramLongPollingBot {
                 execute(sendMediaGroup);
             }
 
-            // 3. НОВОЕ: Отправляем разделитель "📸 ДО | ПОСЛЕ"
-            SendMessage separatorMsg = new SendMessage();
-            separatorMsg.setChatId(String.valueOf(chatId));
-            separatorMsg.setText("📸 ДО | ПОСЛЕ");
-            execute(separatorMsg);
-
-            // 4. Отправляем кнопки со ссылками на отзывы
+            // 3. Сразу после альбома отправляем кнопки со ссылками на отзывы
             SendMessage buttonsMsg = new SendMessage();
             buttonsMsg.setChatId(String.valueOf(chatId));
             buttonsMsg.setText("Больше отзывов по ссылкам ниже:");
