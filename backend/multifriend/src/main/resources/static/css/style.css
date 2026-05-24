@@ -1,0 +1,521 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Russo+One&display=swap');
+
+:root {
+    --bg-main: #2E8B3C;
+    --bg-about: #DBD4C8;
+    --accent-orange: #FF8800;
+    --text-orange: #E48C00;
+    --card-review: rgba(249, 249, 249, 0.5);
+    
+    --font-heading: 'Russo One', sans-serif;
+    --font-body: 'Open Sans', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-main);
+    font-family: var(--font-body);
+    color: #FFFFFF;
+    overflow-x: hidden; 
+}
+
+section {
+    max-width: 1000px;
+    margin: 3rem auto;
+    padding: 0 1.5rem;
+}
+
+h2 {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 400;
+    text-align: center;
+    color: #FFFFFF;
+    margin-bottom: 2rem;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+
+h2::before {
+    content: '';
+    display: block;
+    width: 61px;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #FFE69F 100%);
+    backdrop-filter: blur(1px);
+}
+
+.services img{
+    border-radius: 15px;
+}
+
+h2::after {
+    content: '';
+    display: block;
+    width: 61px;
+    height: 1px;
+    background: linear-gradient(90deg, #FFE69F 0.01%, rgba(255, 255, 255, 0) 100%);
+    backdrop-filter: blur(1px);
+}
+
+h3{
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 400;
+    color: #FFFFFF;
+    margin-bottom: 2rem;
+    justify-content: center;
+}
+
+.service-card h2::before,
+.service-card h2::after {
+    display: none;
+}
+
+img {
+    max-width: 100%;
+    object-fit: cover;
+}
+img:not([src]) {
+    background-color: #D9D9D9;
+    display: block;
+    border-radius: 14px;
+}
+
+.header {
+    position: relative;
+    padding: 20px 1.5rem 5px; /* Уменьшен отступ сверху и снизу */
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.header-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 70px; /* Уменьшено расстояние между лого и текстом */
+}
+
+.logo {
+    width: 150px; /* Размер логотипа под твое фото */
+    height: 150px;
+}
+
+.header-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header-text h1 {
+    position: relative;
+    z-index: 1;
+    width: 194px;
+    height: 25px;
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 100%;
+    text-align: center;
+}
+
+.header-text h1::before {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 278px;
+    top: -99px; 
+    left: 50%;
+    transform: translateX(-50%);
+    background: radial-gradient(50% 50% at 50% 50%, rgba(255, 230, 163, 0.4) 13.94%, rgba(153, 138, 98, 0) 100%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.header-text h1 span {
+    color: var(--text-orange);
+}
+
+.header-text p {
+    width: 181px;
+    height: 48px;
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 100%;
+    text-align: center;
+    margin-top: 10px; /* Уменьшен отступ текста от заголовка */
+}
+
+.aboutUs {
+    position: relative;
+    background-color: var(--bg-about);
+    width: 100%;
+    max-width: 100%;
+    min-height: 95px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+    margin: 3rem 0;
+    z-index: 1;
+    
+    border-bottom-left-radius: 50% 20px;
+    border-bottom-right-radius: 50% 20px;
+}
+
+.aboutUs::before {
+    content: '';
+    position: absolute;
+    top: -2px; 
+    left: -10%;
+    width: 120%; 
+    height: 22px; 
+    background-color: var(--bg-main); 
+    border-bottom-left-radius: 50% 20px;
+    border-bottom-right-radius: 50% 20px;
+    z-index: 0; 
+}
+
+.aboutUs p {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    color: #000000;
+    font-weight: 600;
+    font-size: 14px;
+    text-align: center;
+}
+
+.service-card {
+    background-color: var(--accent-orange);
+    border-radius: 24px;
+    padding: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+}
+
+.before, .after {
+    flex: 1 1 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.before h2, .after h2 {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 24px;
+    text-align: left;
+    justify-content: flex-start;
+    margin-bottom: 0;
+}
+
+.before img, .after img {
+    width: 100%;
+    height: 180px;
+}
+
+.service-card > p {
+    flex: 1 1 100%;
+    color: #000000;
+    font-weight: 600;
+    font-size: 14px;
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.features {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.features div {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-heading);
+    font-size: 14px;
+    margin: 10px;
+}
+
+.features div img {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+}
+
+.reviews {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.review {
+    background-color: var(--card-review);
+    padding: 1.5rem;
+    border-radius: 16px;
+    color: #000000;
+}
+
+.review b {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 400;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.review p {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    margin-top:12px ;
+}
+.review img{
+    width: 50px;
+    height: 50px;
+}
+.review div{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+form {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #FFFFFF;
+    padding: 2rem;
+    border-radius: 16px;
+    color: #000000;
+}
+
+form div {
+    margin-bottom: 1.2rem;
+    text-align: left;
+}
+
+form label {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 12px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+form input, form select, form textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    background-color: #f9f9f9;
+}
+
+form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+form button {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--bg-main);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-heading);
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.social p {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    text-align: center;
+}
+
+.contact-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.contact-buttons a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #FFFFFF;
+    color: #000000;
+    font-family: var(--font-heading);
+    font-size: 20px;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+}
+
+.contact-buttons a img.tg {
+    width: 20px;
+    height: 20px;
+    border-radius: 32.5px;
+}
+
+.contact-buttons a img.whatsApp {
+    width: 23px;
+    height: 23px;
+    border-radius: 36px;
+}
+@media (min-width: 1440px) {
+
+    section {
+        max-width: 1180px;
+    }
+
+    .header {
+        max-width: 1180px;
+        padding-top: 55px;
+    }
+
+    .header-content {
+        gap: 35px;
+    }
+
+    .logo {
+        width: 125px;
+        height: 125px;
+    }
+
+    .header-text h1 {
+        width: auto;
+        height: auto;
+        font-size: 36px;
+    }
+
+    .header-text p {
+        width: 360px;
+        height: auto;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    h2 {
+        font-size: 32px;
+    }
+
+    h3 {
+        font-size: 24px;
+    }
+
+    .aboutUs {
+        padding: 4rem 2rem;
+    }
+
+    .aboutUs p {
+        max-width: 900px;
+        font-size: 18px;
+        line-height: 1.6;
+    }
+
+    .service-card {
+        max-width: 950px;
+        margin: 0 auto;
+        padding: 2.3rem;
+        gap: 1.5rem;
+    }
+
+    .before,
+    .after {
+        flex: 1 1 320px;
+    }
+
+    .before h2,
+    .after h2 {
+        font-size: 26px;
+    }
+
+    .before img,
+    .after img {
+        height: 230px;
+    }
+
+    .service-card > p {
+        max-width: 720px;
+        margin: 0 auto;
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    .reviews {
+        max-width: 950px;
+        margin: 0 auto 3rem;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.2rem;
+    }
+
+    .review {
+        padding: 1.1rem;
+        border-radius: 14px;
+    }
+
+    .review img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .review b {
+        font-size: 15px;
+    }
+
+    .review p {
+        font-size: 12px;
+        line-height: 1.5;
+        margin-top: 10px;
+    }
+
+    form {
+        max-width: 620px;
+        padding: 2.5rem;
+    }
+
+    form input,
+    form select,
+    form textarea {
+        font-size: 16px;
+        padding: 15px;
+    }
+
+    form button {
+        font-size: 18px;
+        padding: 16px;
+    }
+
+    .social p {
+        font-size: 16px;
+    }
+
+    .contact-buttons a {
+        font-size: 22px;
+        padding: 14px 28px;
+    }
+}

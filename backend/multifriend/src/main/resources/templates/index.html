@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Мы предлагаем услуги разнорабочих">
+    <link rel="icon" href="/images/icon.ico">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>MultiFriend</title>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <img src="/images/logo.png" class="logo" alt="логотип">
+
+            <div class="header-text">
+                <h1>Multi<span>Friend</span></h1>
+                <p>Ваш надежный помощник в обслуживании частного дома и участка</p>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section class="aboutUs">
+            <p>
+                Мы предлагаем полный спектр услуг по обслуживанию домов и участков,
+                чтобы вы могли наслаждаться комфортом, а не тратить выходные на тяжелую работу.
+            </p>
+        </section>
+
+        <section class="services">
+            <h2>Наши услуги</h2>
+
+            <div class="service-card">
+                <div class="before">
+                    <h2>До</h2>
+                    <img src="/images/beforeWork.png" alt ="Фото до проделенной работы">
+                </div>
+
+                <div class="after">
+                    <h2>После</h2>
+                    <img src="/images/afterWork.png" alt="Фото после проделанной работы">
+                </div>
+
+                <p>
+                    Поддержание порядка на частной территории требует много времени и сил.
+                    Команда Multi-friend готова взять эти заботы на себя!
+                </p>
+
+                <form
+                        th:action="@{/send}"
+                        th:object="${feedbackForm}"
+                        method="post"
+                        class="feedbackForm"
+                        novalidate
+                >
+
+                    <div>
+
+                        <p class="nameError" style="color:red; margin-bottom:8px;"></p>
+
+                        <input
+                                type="text"
+                                th:field="*{name}"
+                                placeholder="Ваше имя"
+                                required
+                                minlength="2"
+                                maxlength="50"
+                                class="nameInput"
+                        >
+
+                    </div>
+
+                    <div>
+
+                        <label>Как с вами связаться?</label>
+
+                        <select
+                                th:field="*{contactMethod}"
+                                required
+                                class="contactMethod"
+                        >
+
+                            <option value="Telegram">Telegram</option>
+                            <option value="Email">Email</option>
+                            <option value="WhatsApp">WhatsApp</option>
+                            <option value="Phone">Телефонный звонок</option>
+                            <option value="Max">Max</option>
+
+                        </select>
+
+                    </div>
+
+                    <div>
+
+                        <p class="contactError" style="color:red; margin-bottom:8px;"></p>
+
+                        <input
+                                type="text"
+                                th:field="*{contactInfo}"
+                                placeholder="Введите контакт"
+                                required
+                                minlength="3"
+                                maxlength="100"
+                                class="contactInfo"
+                        >
+
+                    </div>
+
+                    <div>
+
+                        <p class="messageError" style="color:red; margin-bottom:8px;"></p>
+
+                        <textarea
+                                th:field="*{message}"
+                                placeholder="Детали заказа"
+                                required
+                                minlength="10"
+                                maxlength="1000"
+                                class="messageInput"
+                        ></textarea>
+
+                    </div>
+
+
+                    <button type="submit">Заказать работу</button>
+
+                </form>
+            </div>
+        </section>
+
+        <section class="why">
+            <h2>Почему выбирают нас</h2>
+
+            <div class="features">
+                <h3>Мы делаем свою работу</h3>
+                <div><img src="/images/tools.png" class="tools" alt="инструменты">Качественно</div>
+                <div><img src="/images/clock.png" class="clock" alt="часы">Быстро</div>
+                <div><img src="/images/heart.png" class="heart" alt="сердце">С душой</div>
+            </div>
+
+            <div class="reviews">
+                <div class="review">
+                    <div>
+                        <img src="/images/UserImg.png">
+                        <b>Алексей</b>
+                    </div>
+                    <p>Работа была выполнена качественно и в срок.
+                        Приехали вовремя, быстро разобрались с задачей и всё сделали аккуратно.
+                        Видно, что есть опыт и ответственный подход. Остался доволен результатом.🤝</p>
+                </div>
+
+                <div class="review">
+                    <div>
+                        <img src="/images/UserImg.png">
+                        <b>Марина</b>
+                    </div>
+                    <p>Очень довольна выполненной работой. Всё сделали быстро, аккуратно и без лишних вопросов.
+                        Учли все пожелания и оставили после себя порядок. Спасибо за хороший результат.</p>
+                </div>
+
+                <div class="review">
+                    <div>
+                        <img src="/images/UserImg.png">
+                        <b>Игорь</b>
+                    </div>
+                    <p>Отличная работа.
+                        Всё выполнено чётко по договорённости, аккуратно и в срок.
+                        Видно, что люди знают своё дело и подходят к задаче серьёзно.
+                        Смело могу рекомендовать.</p>
+                </div>
+
+                <div class="review">
+                    <div>
+                        <img src="/images/UserImg.png">
+                        <b>Ольга</b>
+                    </div>
+                    <p>Прекрасное сотрудничество.
+                        Всё было сделано качественно, аккуратно и оперативно.
+                        Вежливое общение, внимательность к деталям и хороший результат.
+                        Остались только положительные впечатления.</p>
+                </div>
+            </div>
+
+            <form
+                    th:action="@{/send}"
+                    th:object="${feedbackForm}"
+                    method="post"
+                    class="feedbackForm"
+                    novalidate
+            >
+
+                <div>
+
+                    <p class="nameError" style="color:red; margin-bottom:8px;"></p>
+
+                    <input
+                            type="text"
+                            th:field="*{name}"
+                            placeholder="Ваше имя"
+                            required
+                            minlength="2"
+                            maxlength="50"
+                            class="nameInput"
+                    >
+
+                </div>
+
+                <div>
+
+                    <label>Как с вами связаться?</label>
+
+                    <select
+                            th:field="*{contactMethod}"
+                            required
+                            class="contactMethod"
+                    >
+
+                        <option value="Telegram">Telegram</option>
+                        <option value="Email">Email</option>
+                        <option value="WhatsApp">WhatsApp</option>
+                        <option value="Phone">Телефонный звонок</option>
+                        <option value="Max">Max</option>
+
+                    </select>
+
+                </div>
+
+                <div>
+
+                    <p class="contactError" style="color:red; margin-bottom:8px;"></p>
+
+                    <input
+                            type="text"
+                            th:field="*{contactInfo}"
+                            placeholder="Введите контакт"
+                            required
+                            minlength="3"
+                            maxlength="100"
+                            class="contactInfo"
+                    >
+
+                </div>
+
+                <div>
+
+                    <p class="messageError" style="color:red; margin-bottom:8px;"></p>
+
+                    <textarea
+                            th:field="*{message}"
+                            placeholder="Детали заказа"
+                            required
+                            minlength="10"
+                            maxlength="1000"
+                            class="messageInput"
+                    ></textarea>
+
+                </div>
+
+
+                <button type="submit">Заказать работу</button>
+
+            </form>
+        </section>
+
+        <section class="social">
+            <h2>Социальная поддержка</h2>
+            <p>Мы ценим наших пожилых клиентов и предоставляем скидку 25% пенсионерам.</p>
+        </section>
+    </main>
+
+    <footer>
+        <section class="contacts">
+            <h2>Контакты</h2>
+
+            <div class="contact-buttons">
+                <a href="" class="tg"><img src="/images/tg.png" class="tg" alt="телега">Telegram</a>
+                <a href="" class="whatsApp"><img src="/images/whatsapp.jpg" class="whatsApp" alt="вацап">WhatsApp</a>
+            </div>
+        </section>
+    </footer>
+    <script src="../static/js/feedbackForm.js"></script>
+</body>
+</html>
