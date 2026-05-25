@@ -1,9 +1,12 @@
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.media.InputMedia;
+import org.telegram.telegrambots.meta.api.objects.media.InputMediaPhoto;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -18,6 +21,7 @@ public class MyBot extends TelegramLongPollingBot {
     private static final String YANDEX_URL = "https://yandex.ru";
     private static final String DOUBLE_GIS_URL = "https://2gis.ru";
     private static final String AVITO_URL = "https://avito.ru";
+    private static final String TOKEN = "8547798294:AAGA-ySrSYoJc5cWvyaUrMGsmu3mayjj7gA";
 
     @Override
     public String getBotUsername() {
@@ -26,7 +30,7 @@ public class MyBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "8547798294:AAGA-ySrSYoJc5cWvyaUrMGsmu3mayjj7gA";
+        return TOKEN;
     }
 
     @Override
@@ -482,18 +486,33 @@ public class MyBot extends TelegramLongPollingBot {
         }
 
         try {
-            // Отправляем текст с описанием
-            SendMessage textMsg = new SendMessage();
-            textMsg.setChatId(String.valueOf(chatId));
-            textMsg.setText("*" + title + "*\n\n" + description + "\n\nРезультат работы:");
-            textMsg.setParseMode("Markdown");
-            execute(textMsg);
+            // 1. Готовим список медиафайлов для альбома
+            List<InputMedia> mediaGroup = new ArrayList<>();
 
-            // Отправляем фото с проверкой существования
-            sendPhotoIfExists(chatId, beforePhoto, "До");
-            sendPhotoIfExists(chatId, afterPhoto, "После");
+            // Формируем чистый текст (title и description) для подписи под альбомом
+            String fullCaption = "*" + title + "*\n\n" + description;
 
-            // Отправляем кнопки со ссылками на отзывы
+            // Загружаем и добавляем первое фото ("До") с главным описанием
+            InputMediaPhoto mediaBefore = createInputMediaPhoto(beforePhoto, fullCaption, "Markdown");
+            if (mediaBefore != null) {
+                mediaGroup.add(mediaBefore);
+            }
+
+            // Загружаем и добавляем второе фото ("После") без внутренней подписи
+            InputMediaPhoto mediaAfter = createInputMediaPhoto(afterPhoto, null, null);
+            if (mediaAfter != null) {
+                mediaGroup.add(mediaAfter);
+            }
+
+            // 2. Отправляем альбом
+            if (!mediaGroup.isEmpty()) {
+                SendMediaGroup sendMediaGroup = new SendMediaGroup();
+                sendMediaGroup.setChatId(String.valueOf(chatId));
+                sendMediaGroup.setMedias(mediaGroup);
+                execute(sendMediaGroup);
+            }
+
+            // 3. Сразу после альбома отправляем кнопки со ссылками на отзывы
             SendMessage buttonsMsg = new SendMessage();
             buttonsMsg.setChatId(String.valueOf(chatId));
             buttonsMsg.setText("Больше отзывов по ссылкам ниже:");
@@ -505,25 +524,23 @@ public class MyBot extends TelegramLongPollingBot {
         }
     }
 
-    // Вспомогательный метод для отправки фото
-    private void sendPhotoIfExists(long chatId, String photoName, String caption) {
-        try {
-            InputStream photoStream = getClass().getClassLoader()
-                    .getResourceAsStream("photos/" + photoName);
+    private InputMediaPhoto createInputMediaPhoto(String photoName, String caption, String parseMode) {
+        InputStream photoStream = getClass().getClassLoader()
+                .getResourceAsStream("photos/" + photoName);
 
-            if (photoStream == null) {
-                System.err.println("Файл не найден: photos/" + photoName);
-                return;
-            }
-
-            SendPhoto photo = new SendPhoto();
-            photo.setChatId(String.valueOf(chatId));
-            photo.setCaption(caption);
-            photo.setPhoto(new InputFile(photoStream, photoName));
-            execute(photo);
-        } catch (Exception e) {
-            System.err.println("Ошибка при отправке фото " + photoName + ": " + e.getMessage());
+        if (photoStream == null) {
+            System.err.println("Файл не найден: photos/" + photoName);
+            return null;
         }
+
+        InputMediaPhoto mediaPhoto = new InputMediaPhoto();
+        mediaPhoto.setMedia(photoStream, photoName);
+        mediaPhoto.setCaption(caption);
+        if (parseMode != null) {
+            mediaPhoto.setParseMode(parseMode);
+        }
+
+        return mediaPhoto;
     }
 
 }
